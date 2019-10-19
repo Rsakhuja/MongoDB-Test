@@ -1,29 +1,38 @@
 import pymongo
 
+
+
+def GetOne(client, userid):
+    filter = {'userid': userid}
+    db = client.DressesDB
+    collection = db.users
+    records = collection.find(filter)
+
+    for document in records:
+        print(document)
+
+
 # mongodb+srv://admin:admin123@cluster0-46e5h.mongodb.net/dresses?retryWrites=true&w=majority
 try:
-    # myclient = pymongo.MongoClient("mongodb+srv://admin:admin123@cluster0-46e5h.mongodb.net/DressesDB?retryWrites=true&w=majority")
-
-
+    # Object represents a connection to the DB
     client = pymongo.MongoClient("mongodb://admin:admin123@cluster0-shard-00-00-46e5h.mongodb.net:27017,cluster0-shard-00-01-46e5h.mongodb.net:27017,cluster0-shard-00-02-46e5h.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
     
-
-    # client = pymongo.MongoClient('mongodb+srv://admin:admin123@cluster0-46e5h.mongodb.net/test?retryWrites=true&w=majority')
+    # Abstraction for DB
     db = client.DressesDB
 
-    # db = client.get_database('DressesDB')
+    # Now connect with collection
+    records = db.users
 
-    records = db.dresses
-
+    # Get the count
     count = records.count_documents({})
 
-    print(count)
+    print('count=',count)
 
+    GetOne(client, 'ridhima')
 except pymongo.errors.ConnectionFailure:
     print("exception")
 
 
-print(client)
 
 
 
